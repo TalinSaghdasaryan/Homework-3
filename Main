@@ -1,0 +1,125 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Date{
+private:
+    int day;
+    string month;
+    int year;
+
+    const string months[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+
+public:
+    Date() {
+        day = 1;
+        month = "January";
+        year = 1900;
+    }
+    void initialize(int dday, string mmonth, int yyear){
+        day = dday;
+        month = mmonth;
+        year = yyear;
+        if(day<1 || day>31){
+            cout<<"Your input is invalid, the day is set to 1";
+            day = 1;
+        }
+        bool ok = false;
+        for( int i=0; i < 12; i++ ){
+            if( months[i] == month ) {
+                ok = true;
+                break;
+            }
+        }
+        if( ok == false ) {
+            cout<<"Your input is invalid, the month is set to January";
+            month = "January";
+        }
+        if(year < 0){
+            cout<<"Your input is invalid, the year is set to 1900";
+            year = 1900;
+        }
+    }
+
+    void get_date(){
+        cout<<year<<" "<<month<<" "<<day;
+    }
+};
+
+class Student{
+private:
+    string first_name;
+    string last_name;
+    Date birth_date;
+    string faculty;
+    string id;
+    string id_number;
+
+
+public:
+    static int id_counter;
+    Student(string firstname, string lastname, string ffaculty) {
+        first_name = firstname;
+        last_name = lastname;
+        faculty = ffaculty;
+        ++id_counter;
+        id_number = to_string(id_counter);
+        id = "AUA_"+faculty+'_'+id_number;
+        cout<<faculty<<endl<<first_name<<endl<<last_name<<endl<<id<<endl;
+    }
+
+    Student( const Student& other ) {
+        faculty = other.faculty;
+        ++id_counter;
+        id_number = to_string(id_counter);
+        id = "AUA_"+faculty+'_'+id_number;
+    }
+
+    void set_birth_date(int day, string month, int year){
+        birth_date.initialize(day, month, year);
+    }
+
+    void set_name(string ffirst_name, string llast_name){
+        first_name = ffirst_name;
+        last_name = llast_name;
+    }
+
+    void get_birth_date(){
+        birth_date.get_date();
+    }
+
+    void get_first_name(){
+        cout<<first_name<<endl;
+    }
+
+    void get_last_name(){
+        cout<<last_name<<endl;
+    }
+
+    void get_id(){
+        cout<<id<<endl;
+    }
+
+};
+
+int Student::id_counter = 0;
+
+int main(){
+    Student a("Talin", "Saghdasaryan", "CS");
+    a.set_birth_date(5, "October", 1997);
+
+    Student b(a);
+    b.set_name ("Tasja", "Karapetyan");
+    b.set_birth_date(29, "September", 1998);
+    cout<<"Below is the information about the registered students"<<endl;
+    a.get_first_name();
+    a.get_last_name();
+    a.get_id();
+    a.get_birth_date();
+    b.get_first_name();
+    b.get_last_name();
+    b.get_id();
+    b.get_birth_date();
+    return 0;
+}
